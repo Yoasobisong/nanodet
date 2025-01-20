@@ -103,7 +103,7 @@ make
 ```
 
 
-## Run demo
+#
 
 You can convert the model to openvino or use the [converted model](https://drive.google.com/file/d/1dAwIA2pMkSetPEcvB0dvmLaOAK-9h-Lm/view?usp=sharing)
 

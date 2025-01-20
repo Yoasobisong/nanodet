@@ -32,6 +32,7 @@ def generate_ouput_names(head_cfg):
 
 
 def main(config, model_path, output_path, input_shape=(320, 320)):
+    
     logger = Logger(-1, config.save_dir, False)
     model = build_model(config.model)
     checkpoint = torch.load(model_path, map_location=lambda storage, loc: storage)
@@ -63,6 +64,8 @@ def main(config, model_path, output_path, input_shape=(320, 320)):
     input_data = {"data": dummy_input.detach().cpu().numpy()}
     model_sim, flag = onnxsim.simplify(output_path, input_data=input_data)
     if flag:
+        # os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        # logger.log("have no onnx foler, create!")
         onnx.save(model_sim, output_path)
         logger.log("simplify onnx successfully")
     else:
@@ -79,7 +82,7 @@ def parse_args():
         "--model_path", type=str, default=None, help="Path to .ckpt model."
     )
     parser.add_argument(
-        "--out_path", type=str, default="nanodet.onnx", help="Onnx model output path."
+        "--out_path", type=str, default="nanodet1.onnx", help="Onnx model output path."
     )
     parser.add_argument(
         "--input_shape", type=str, default=None, help="Model intput shape."

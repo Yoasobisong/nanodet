@@ -71,7 +71,7 @@ int NanoDet::detect(cv::Mat &raw_image, std::vector<BoxInfo> &result_list)
                                         norm_vals, 3));
     pretreat->convert(image.data, input_size[1], input_size[0], image.step[0], input_tensor);
 
-    auto start = chrono::steady_clock::now();
+    // auto start = chrono::steady_clock::now();
 
 
     // run network
@@ -91,9 +91,9 @@ int NanoDet::detect(cv::Mat &raw_image, std::vector<BoxInfo> &result_list)
 
     decode_infer(&tensor_preds_host, center_priors, score_threshold, results);
 
-    auto end = chrono::steady_clock::now();
-    chrono::duration<double> elapsed = end - start;
-    cout << "inference time:" << elapsed.count() << " s, ";
+    // auto end = chrono::steady_clock::now();
+    // chrono::duration<double> elapsed = end - start;
+    // cout << "inference fps:" << 1 / elapsed.count() << " s, ";
 
     // std::vector<BoxInfo> dets;
     for (int i = 0; i < (int)results.size(); i++)
@@ -109,7 +109,7 @@ int NanoDet::detect(cv::Mat &raw_image, std::vector<BoxInfo> &result_list)
             result_list.push_back(box);
         }
     }
-    cout << "detect " << result_list.size() << " objects" << endl;
+    // cout << "detect " << result_list.size() << " objects" << endl;
 
     return 0;
 }

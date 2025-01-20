@@ -106,7 +106,7 @@ std::vector<BoxInfo> NanoDet::detect(cv::Mat image, float score_threshold, float
 
     auto ex = this->Net->create_extractor();
     ex.set_light_mode(false);
-    ex.set_num_threads(4);
+    ex.set_num_threads(1);
 #if NCNN_VULKAN
     ex.set_vulkan_compute(this->hasGPU);
 #endif

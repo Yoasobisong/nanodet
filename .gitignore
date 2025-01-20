@@ -117,3 +117,21 @@ work_dirs/
 *.pth
 *.py~
 *.sh~
+
+# Ignore image files
+*.jpg
+*.jpeg
+*.png
+
+# Ignore xml files
+*.xml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

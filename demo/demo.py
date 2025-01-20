@@ -19,7 +19,7 @@ video_ext = ["mp4", "mov", "avi", "mkv"]
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "demo", default="image", help="demo type, eg. image, video and webcam"
+        "--demo", default="image", help="demo type, eg. image, video and webcam"
     )
     parser.add_argument("--config", help="model config file path")
     parser.add_argument("--model", help="model file path")

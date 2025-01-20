@@ -161,20 +161,7 @@ const int color_list[80][3] =
 
 void draw_bboxes(const cv::Mat& bgr, const std::vector<BoxInfo>& bboxes, object_rect effect_roi)
 {
-    static const char* class_names[] = { "person", "bicycle", "car", "motorcycle", "airplane", "bus",
-                                        "train", "truck", "boat", "traffic light", "fire hydrant",
-                                        "stop sign", "parking meter", "bench", "bird", "cat", "dog",
-                                        "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe",
-                                        "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee",
-                                        "skis", "snowboard", "sports ball", "kite", "baseball bat",
-                                        "baseball glove", "skateboard", "surfboard", "tennis racket",
-                                        "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl",
-                                        "banana", "apple", "sandwich", "orange", "broccoli", "carrot",
-                                        "hot dog", "pizza", "donut", "cake", "chair", "couch",
-                                        "potted plant", "bed", "dining table", "toilet", "tv", "laptop",
-                                        "mouse", "remote", "keyboard", "cell phone", "microwave", "oven",
-                                        "toaster", "sink", "refrigerator", "book", "clock", "vase",
-                                        "scissors", "teddy bear", "hair drier", "toothbrush"
+    static const char* class_names[] = { "yellow", "white"
     };
 
     cv::Mat image = bgr.clone();
@@ -283,7 +270,7 @@ int video_demo(NanoDet& detector, const char* path)
         object_rect effect_roi;
         cv::Mat resized_img;
         resize_uniform(image, resized_img, cv::Size(width, height), effect_roi);
-        auto results = detector.detect(resized_img, 0.4, 0.5);
+        auto results = detector.detect(resized_img, 0.5, 0.8);
         draw_bboxes(image, results, effect_roi);
         cv::waitKey(1);
     }

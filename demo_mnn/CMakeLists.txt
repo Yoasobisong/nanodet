@@ -14,3 +14,13 @@ link_directories(mnn/lib)
 
 add_executable(nanodet-mnn main.cpp nanodet_mnn.cpp)
 target_link_libraries(nanodet-mnn MNN ${OpenCV_LIBS})
+
+message(STATUS "OpenCV libraries: ${OpenCV_LIBS}")
+message(STATUS "OpenCV include dirs: ${OpenCV_INCLUDE_DIRS}")
+
+message(STATUS "MNN include dir: ${CMAKE_CURRENT_SOURCE_DIR}/mnn/include")
+message(STATUS "Project source dir: ${CMAKE_CURRENT_SOURCE_DIR}")
+
+message(STATUS "MNN library dir: ${CMAKE_CURRENT_SOURCE_DIR}/mnn/lib")
+
+message(STATUS "Libraries for nanodet-mnn: ${OPENCV_LIBS}")

@@ -3,11 +3,11 @@
 
 #pragma once
 
-#include "Interpreter.hpp"
+#include "MNN/Interpreter.hpp"
 
-#include "MNNDefine.h"
-#include "Tensor.hpp"
-#include "ImageProcess.hpp"
+#include "MNN/MNNDefine.h"
+#include "MNN/Tensor.hpp"
+#include "MNN/ImageProcess.hpp"
 #include <opencv2/opencv.hpp>
 #include <algorithm>
 #include <iostream>
@@ -44,7 +44,7 @@ typedef struct CenterPrior_
 class NanoDet {
 public:
     NanoDet(const std::string &mnn_path,
-            int input_width, int input_length, int num_thread_ = 4, float score_threshold_ = 0.5, float nms_threshold_ = 0.3);
+            int input_width, int input_length, int num_thread_ = 10, float score_threshold_ = 0.5, float nms_threshold_ = 0.3);
 
     ~NanoDet();
 
@@ -52,10 +52,10 @@ public:
     std::string get_label_str(int label);
 
     // modify these parameters to the same with your config if you want to use your own model
-    int input_size[2] = {416, 416}; // input height and width
-    int num_class = 80; // number of classes. 80 for COCO
+    int input_size[2] = {320, 320}; // input height and width
+    int num_class = 1; // number of classes. 80 for COCO
     int reg_max = 7; // `reg_max` set in the training config. Default: 7.
-    std::vector<int> strides = { 8, 16, 32, 64 }; // strides of the multi-level feature.
+    std::vector<int> strides = { 8, 16, 32}; // strides of the multi-level feature.
 
     std::string input_name = "data";
     std::string output_name = "output";
@@ -82,15 +82,7 @@ private:
     const float norm_vals[3] = { 0.017429f, 0.017507f, 0.017125f };
 
     std::vector<std::string>
-    labels{"person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat", "traffic light",
-           "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow",
-           "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee",
-           "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard",
-           "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple",
-           "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair", "couch",
-           "potted plant", "bed", "dining table", "toilet", "tv", "laptop", "mouse", "remote", "keyboard", "cell phone",
-           "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear",
-           "hair drier", "toothbrush"};
+    labels{"red"};
 };
 
 template <typename _Tp>

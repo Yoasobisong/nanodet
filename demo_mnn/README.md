@@ -30,6 +30,8 @@ Please follow the [official document](https://www.yuque.com/mnn/en/build_linux) 
 
    ``` shell
    python -m MNN.tools.mnnconvert -f ONNX --modelFile sim.onnx --MNNModel nanodet.mnn
+    or、、、
+   ./MNNConvert -f ONNX --modelFile sim.onnx --MNNModel nanodet.mnn
    ```
 
 It should be note that the input size does not have to be fixed, it can be any integer multiple of strides,

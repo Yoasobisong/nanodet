@@ -4,6 +4,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+using namespace std;
+
 #define __SAVE_RESULT__ // if defined save drawed results to ../results, else show it in windows
 
 struct object_rect {
@@ -163,20 +165,7 @@ const int color_list[80][3] =
 
 void draw_bboxes(const cv::Mat& bgr, const std::vector<BoxInfo>& bboxes, object_rect effect_roi, std::string save_path="None")
 {
-    static const char* class_names[] = { "person", "bicycle", "car", "motorcycle", "airplane", "bus",
-                                        "train", "truck", "boat", "traffic light", "fire hydrant",
-                                        "stop sign", "parking meter", "bench", "bird", "cat", "dog",
-                                        "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe",
-                                        "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee",
-                                        "skis", "snowboard", "sports ball", "kite", "baseball bat",
-                                        "baseball glove", "skateboard", "surfboard", "tennis racket",
-                                        "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl",
-                                        "banana", "apple", "sandwich", "orange", "broccoli", "carrot",
-                                        "hot dog", "pizza", "donut", "cake", "chair", "couch",
-                                        "potted plant", "bed", "dining table", "toilet", "tv", "laptop",
-                                        "mouse", "remote", "keyboard", "cell phone", "microwave", "oven",
-                                        "toaster", "sink", "refrigerator", "book", "clock", "vase",
-                                        "scissors", "teddy bear", "hair drier", "toothbrush"
+    static const char* class_names[] = { "red"
     };
 
     cv::Mat image = bgr.clone();
@@ -255,7 +244,8 @@ int image_demo(NanoDet &detector, const char* imagepath)
         detector.detect(resized_img, results);
 
         #ifdef __SAVE_RESULT__
-            std::string save_path = img_name.operator std::string();
+            // std::string() save_path = img_name.operator std::string();
+            std::string save_path = static_cast<std::string>(img_name);
             draw_bboxes(image, results, effect_roi, save_path.replace(3, 4, "results"));
         #else
             draw_bboxes(image, results, effect_roi);
@@ -272,9 +262,11 @@ int webcam_demo(NanoDet& detector, int cam_id)
     cv::VideoCapture cap(cam_id);
     int height = detector.input_size[0];
     int width = detector.input_size[1];
-
+    int count = 0;
+    double all_time = 0;
     while (true)
     {
+        auto start = chrono::steady_clock::now();
         cap >> image;
         object_rect effect_roi;
         cv::Mat resized_img;
@@ -283,6 +275,17 @@ int webcam_demo(NanoDet& detector, int cam_id)
         detector.detect(resized_img, results);
         draw_bboxes(image, results, effect_roi);
         cv::waitKey(1);
+        auto end = chrono::steady_clock::now();
+        chrono::duration<double> elapsed = end - start;
+        cout << "inference fps:" << 1 / elapsed.count() << endl;
+        all_time += elapsed.count();
+        count += 1;
+        if (all_time >= 10)
+        {
+            cout << "AVERAGE FPS:" << count / all_time << endl;
+            count = 0;
+            all_time = 0;
+        }
     }
     return 0;
 }
@@ -350,7 +353,7 @@ int main(int argc, char** argv)
         return -1;
     }
     // NanoDet detector = NanoDet("../model/nanodet-160.mnn", 160, 160, 4, 0.4, 0.3);
-    NanoDet detector = NanoDet("nanodet.mnn", 416, 416, 4, 0.45, 0.3);
+    NanoDet detector = NanoDet("red.mnn", 320, 320, 4, 0.88, 0.36);
     int mode = atoi(argv[1]);
     switch (mode)
     {

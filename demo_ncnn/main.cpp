@@ -163,20 +163,7 @@ const int color_list[80][3] =
 
 void draw_bboxes(const cv::Mat& bgr, const std::vector<BoxInfo>& bboxes, object_rect effect_roi)
 {
-    static const char* class_names[] = { "person", "bicycle", "car", "motorcycle", "airplane", "bus",
-                                        "train", "truck", "boat", "traffic light", "fire hydrant",
-                                        "stop sign", "parking meter", "bench", "bird", "cat", "dog",
-                                        "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe",
-                                        "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee",
-                                        "skis", "snowboard", "sports ball", "kite", "baseball bat",
-                                        "baseball glove", "skateboard", "surfboard", "tennis racket",
-                                        "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl",
-                                        "banana", "apple", "sandwich", "orange", "broccoli", "carrot",
-                                        "hot dog", "pizza", "donut", "cake", "chair", "couch",
-                                        "potted plant", "bed", "dining table", "toilet", "tv", "laptop",
-                                        "mouse", "remote", "keyboard", "cell phone", "microwave", "oven",
-                                        "toaster", "sink", "refrigerator", "book", "clock", "vase",
-                                        "scissors", "teddy bear", "hair drier", "toothbrush"
+    static const char* class_names[] = { "pinggai",
     };
 
     cv::Mat image = bgr.clone();
@@ -215,7 +202,7 @@ void draw_bboxes(const cv::Mat& bgr, const std::vector<BoxInfo>& bboxes, object_
             color, -1);
 
         cv::putText(image, text, cv::Point(x, y + label_size.height),
-            cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(255, 255, 255));
+            cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(255, 255, 255));
     }
 
     cv::imshow("image", image);
@@ -256,9 +243,11 @@ int webcam_demo(NanoDet& detector, int cam_id)
     cv::VideoCapture cap(cam_id);
     int height = detector.input_size[0];
     int width = detector.input_size[1];
-
+    int count = 0;
+    double all_time = 0.;
     while (true)
     {
+        auto start = std::chrono::steady_clock::now();
         cap >> image;
         object_rect effect_roi;
         cv::Mat resized_img;
@@ -266,6 +255,17 @@ int webcam_demo(NanoDet& detector, int cam_id)
         auto results = detector.detect(resized_img, 0.4, 0.5);
         draw_bboxes(image, results, effect_roi);
         cv::waitKey(1);
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        std::cout << "inference fps:" << 1 / elapsed.count() << std::endl;
+        all_time += elapsed.count();
+        count += 1;
+        if (all_time >= 10)
+        {
+            std::cout << "AVERAGE_FPS:" << count / 10 << std::endl;
+            all_time = 0.;
+            count = 0;
+        }
     }
     return 0;
 }
@@ -279,13 +279,18 @@ int video_demo(NanoDet& detector, const char* path)
 
     while (true)
     {
+        auto start = std::chrono::steady_clock::now();
         cap >> image;
         object_rect effect_roi;
         cv::Mat resized_img;
+        std::cout << width << ", " << height << std::endl;
         resize_uniform(image, resized_img, cv::Size(width, height), effect_roi);
-        auto results = detector.detect(resized_img, 0.4, 0.5);
+        auto results = detector.detect(resized_img, 0.6, 0.8);
         draw_bboxes(image, results, effect_roi);
         cv::waitKey(1);
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        std::cout << "inference fps:" << 1 / elapsed.count() << std::endl;
     }
     return 0;
 }
