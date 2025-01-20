@@ -1,5 +1,13 @@
 # NanoDet Training and Deployment Guide
 
+## Haved tried in jetson nano, raspi4, and ubuntu 20.04(4 core cpu ,8GB ram, without gpu)
+| Device | OS | Status | Performance |
+|--------|----|---------| ------------|
+| Jetson Nano | Ubuntu 18.04 | ✅ Tested | ~50 FPS |
+| Raspberry Pi 4 | Ubuntu 20.04 | ✅ Tested | ~30 FPS |
+| PC (CPU only) | Ubuntu 20.04 | ✅ Tested | ~19 FPS |
+
+
 ## Environment Setup
 - Host Configuration:
   - Ubuntu 20.04 LTS
