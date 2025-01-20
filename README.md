@@ -4,7 +4,7 @@
 | Device | OS | Status | Performance |
 |--------|----|---------| ------------|
 | Jetson Nano | Ubuntu 18.04 | ✅ Tested | ~50 FPS |
-| Raspberry Pi 4 | Ubuntu 20.04 | ✅ Tested | ~30 FPS |
+| Raspberry Pi 4 | Raspberry Pi OS | ✅ Tested | ~30 FPS |
 | PC (CPU only) | Ubuntu 20.04 | ✅ Tested | ~19 FPS |
 
 
